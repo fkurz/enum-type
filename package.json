@@ -1,0 +1,35 @@
+{
+  "name": "js-enums",
+  "version": "1.0.0",
+  "description": "Enums for JavaScript",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-stage-2": "^6.24.1",
+    "eslint": "^5.4.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-config-prettier": "^3.0.1",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-prettier": "^2.6.2",
+    "jest": "^23.5.0",
+    "prettier": "^1.14.2"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fkurz/js-enums.git"
+  },
+  "keywords": [
+    "JavaScript",
+    "enum"
+  ],
+  "author": "Friedrich Kurz <friedrich.kurz@live.com> (https://github.com/fkurz/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fkurz/js-enums/issues"
+  },
+  "homepage": "https://github.com/fkurz/js-enums#readme"
+}
