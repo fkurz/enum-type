@@ -1,8 +1,8 @@
 class Enum {
-  static from(array) {
+  static fromArray(array) {
     const e = {};
 
-    array.forEach(({ key, value }, index) => {
+    array.forEach(([key, value], index) => {
       if (typeof e[key] !== "undefined") {
         throw new Error(`Duplicate key (key: "${key}")`);
       }
@@ -11,14 +11,23 @@ class Enum {
       e[index] = value;
     });
 
-    return Object.seal(Object.assign(Enum.prototype, e));
+    return Object.seal(Object.assign(new Enum(), e));
   }
 
+  static fromObject(object) {
+    return Enum.fromArray(Object.entries(object));
+  }
+
+  // TODO this guarantees order but is ugly
   keys() {
-    return Object.keys(this).filter(key => {
-      const relativeInitialCharCode = key.charCodeAt(0) - 0x41;
-      return relativeInitialCharCode >= 0 && relativeInitialCharCode <= 25;
-    });
+    return Object.keys(this)
+      .filter(key => {
+        const relativeInitialCharCode = key.charCodeAt(0) - 0x41;
+        return relativeInitialCharCode >= 0 && relativeInitialCharCode <= 25;
+      })
+      .map(key => [this[key], key])
+      .sort(([index_1, _], [index_2, __]) => index_1 - index_2)
+      .map(([_, key]) => key);
   }
 
   entries() {
@@ -29,13 +38,31 @@ class Enum {
   }
 
   values() {
-    return Object.entries(this)
-      .filter(([key, value]) => key.charCodeAt(0) - 0x30 < 10)
-      .map(([key, value]) => value);
+    return this.keys().map(key => this[this[key]]);
   }
 
   keyOf(value) {
     return this.keys().find(key => this[this[key]] === value);
+  }
+
+  [Symbol.iterator]() {
+    return {
+      _elements: this.keys().map(key => [key, this[this[key]]]),
+      _index: 0,
+      next() {
+        let value = null;
+        let done = false;
+
+        if (this._index === this._elements.length) {
+          done = true;
+        } else {
+          value = this._elements[this._index];
+          this._index = this._index + 1;
+        }
+
+        return { done, value };
+      }
+    };
   }
 }
 
