@@ -54,12 +54,12 @@ describe("Enum methods", () => {
     });
   });
 
-  describe("Methods", () => {
-    const e = Enum.fromArray(countryCodeArray);
+  describe("Instance methods", () => {
+    const CountryCodes = Enum.fromArray(countryCodeArray);
 
     test("`Enum.prototype.keys`", () => {
       const keys = countryCodeArray.map(([key, value]) => key);
-      expect(e.keys()).toEqual(keys);
+      expect(CountryCodes.keys()).toEqual(keys);
     });
 
     test("`Enum.prototype.entries`", () => {
@@ -67,16 +67,16 @@ describe("Enum methods", () => {
         result[key] = value;
         return result;
       }, {});
-      expect(e.entries()).toEqual(entries);
+      expect(CountryCodes.entries()).toEqual(entries);
     });
 
     test("`Enum.prototype.values`", () => {
       const values = countryCodeArray.map(([_, value]) => value);
-      expect(e.values()).toEqual(values);
+      expect(CountryCodes.values()).toEqual(values);
     });
 
     test("`Enum.prototype.keyOf`", () => {
-      expect(e.keyOf("France (+33)")).toEqual("FR");
+      expect(CountryCodes.keyOf("France (+33)")).toEqual("FR");
     });
   });
 
@@ -84,9 +84,14 @@ describe("Enum methods", () => {
     const CountryCodes = Enum.fromObject(countryCodeObject);
 
     test("`Enum.prototype[Symbol.iterator]` works correctly for empty enum", () => {
-      const Empty = new Enum();
+      let Empty;
+      try {
+        Empty = new Enum();
+      } catch (e) {
+        console.log(e);
+      }
       for (const element of Empty) {
-        expect(false).toBe(true);
+        fail();
       }
     });
 
@@ -133,7 +138,7 @@ describe("Enum methods", () => {
           key = "US";
           break;
         default:
-          expect(true).toBe(false);
+          fail();
       }
 
       expect(key).toEqual(CountryCodes.keyOf(CountryCodes[randomEnumValue]));
