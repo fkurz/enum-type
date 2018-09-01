@@ -10,12 +10,12 @@ npm i -S @fkurz/enum-type
 ## USAGE
 
 ```javascript
-const Suit = Enum.fromObject({
+const CardSuit = Enum.fromObject({
   CLUB: "club",
   DIAMOND: "diamond",
   HEART: "heart",
   SPADE: "spade"
-]);
+});
 ```
 
 See chapter _THE `Enum` CLASS_ below for more details.
@@ -156,7 +156,7 @@ In addition to constructing it, both methods will make the enum instance unmodif
 `CardSuit` can be constructed using the `Enum` class provided by this package as follows:
 
 ```javascript
-const Suit = Enum.fromArray([
+const CardSuit = Enum.fromArray([
   ["CLUB", "club"],
   ["DIAMOND", "diamond"],
   ["HEART", "heart"],
@@ -167,12 +167,12 @@ const Suit = Enum.fromArray([
 or—if the specific ordering is not relevant as long as there is some order—by
 
 ```javascript
-const Suit = Enum.fromObject({
+const CardSuit = Enum.fromObject({
   CLUB: "club",
   DIAMOND: "diamond",
   HEART: "heart",
   SPADE: "spade"
-]);
+});
 ```
 
 **NOTE:** The second enum does not necessarily return the values in insertion order of the passed object because the implementation uses `Object.entries` and this does not guarantee a fixed order. ([1])
