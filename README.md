@@ -2,30 +2,30 @@
 
 Enums for JavaScript
 
----
+> ---
 
 **INDEX:**
 
 - [js-enums](#js-enums)
     - [Summary](#summary)
-    - [Treatment of enumerable types](#treatment-of-enumerable-types)
+    - [Enumerated types](#enumerated-types)
     - [Translation to JavaScript](#translation-to-javascript)
         - [Properties of this implementation](#properties-of-this-implementation)
         - [The `Enum` class](#the-enum-class)
             - [Static methods](#static-methods)
             - [Instance methods](#instance-methods)
 
----
+> ---
 
 ## Summary
 
 This package provides the `Enum` class as common base for **enumerable types** in plain JavaScript.
 
-## Treatment of enumerable types
+## Enumerated types
 
-The concept of an **enumerated type** (or, **enumeration**/ **enum**) has different interpretations in various languages. Most commonly, enums are thought of as sets of constants of a common type which are bound to associated identifiers.
+The concept of an **enumerated type** (or, **enumeration**/ **enum**) has different interpretations in various languages. Most commonly, enums are thought of as sets of constants of a common type whose elements are bound to unique identifiers.
 
----
+> ---
 
 **EXAMPLE:** In Java an enum for the suits of (french) playing cards could be defined by
 
@@ -44,7 +44,7 @@ This is getting compiled to instances `CLUB`, `DIAMOND`, `HEART` and `SPADE` ava
 CardSuit.class == CardSuit.CLUB.getClass() // true
 ```
 
----
+> ---
 
 We lean towards a bit more flexible interpration of enums where an enumerable type is a specified as a
 
@@ -52,13 +52,15 @@ We lean towards a bit more flexible interpration of enums where an enumerable ty
 - which can be enumerated by the natural numbers
 - and whose indexes are associated with a set of names
 
-This specification implies that $C$ is not necessarily a set and can contain values of arbitrary and not necessarily one and the same type. This is a comparatively weak approach in terms of type safety. However, on the plus side—by requiring enumerability over the natural numbers—we guarantee fixed iteration order and ordering/comparability. Moreover—by associating the indexes of the values with names—we get hash map like value access and mnemonics for the values which may improve readability and self-documentation properties of our code.
+Implicitely $C$ is not necessarily a set and can contain values of arbitrary and not necessarily one and the same type. This is an intentionally weak approach in terms of type safety which might provide a wider range of use.
+
+By requiring enumerability over the natural numbers—we can guarantee fixed iteration order and also gain ordering/comparability. Moreover—by associating the indexes of the values with names—we get hash map like value access and mnemonics for the values which may improve readability and self-documentation properties of our code.
 
 ## Translation to JavaScript
 
 An enumerable type as specified above can be implemented in JavaScript as an `Object` with mixed `String` and `Number` keys where the string keys map to the index of their associated valuesimplement the numbering the values to their order number and the string keys map names to order numbers.
 
----
+> ---
 
 **EXAMPLE:** The enumerable type for card suits could be defined as
 
@@ -77,7 +79,7 @@ const CardSuit = {
 };
 ```
 
----
+> ---
 
 This is somewhat inspired by the way `enum` definitions are [transpiled in TypeScript][2]. We however discard the reverse mapping from indexes to keys in favor enumerating the values.
 
@@ -96,8 +98,8 @@ An enum implementation like that has some convenient properties:
 - Fixed iteration order (like an `Array`):
 
   ```javascript
-  for (let i = 0; i <= 3; i++) {
-    console.log(CardSuit[i]);
+  for (const suit of CardSuit) {
+    console.log(suit);
   }
 
   // 'club'
@@ -120,9 +122,17 @@ An enum implementation like that has some convenient properties:
   }
   ```
 
----
+> ---
 
-**NOTE:** Retrieving values by name is a two-stage process. E.g. we have to write `CardSuit[CardSuit.CLUB]` to obtain the value associated with the name `CLUB`. This is because the enum stores index keys by name rather than the actual value.
+**NOTE:** Retrieving values by name as shown in the second property requires two access operations on the enum: first to access the index for the given name and the second to retrieve the value for that index. E.g. we have to write
+
+```
+CardSuit[CardSuit.CLUB]
+```
+
+to obtain the value associated with the name `CLUB`.
+
+**NOTE:** The compatibility with the _for-of_ loop shown (third implementation property) is due to `Enum`'s implementation of the `Iterable` interface (otherwise properties bound to string keys would also be looped over).
 
 ### The `Enum` class
 
@@ -140,7 +150,7 @@ An enum implementation like that has some convenient properties:
 
 In addition to constructing it, both methods will make the enum instance unmodifiable using `Object.freeze`.
 
----
+> ---
 
 **EXAMPLE:**
 
@@ -168,7 +178,7 @@ const Suit = Enum.fromObject({
 
 **NOTE:** The second enum does not necessarily return the values in insertion order of the passed object because the implementation uses `Object.entries` and this does not guarantee a fixed order. ([1])
 
----
+> ---
 
 #### Instance methods
 
@@ -188,7 +198,7 @@ const Suit = Enum.fromObject({
 
   Return the key associated with the given value. This is the reverse of the value enumeration.
 
----
+> ---
 
 **EXAMPLES:**
 
