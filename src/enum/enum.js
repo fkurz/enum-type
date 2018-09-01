@@ -1,33 +1,32 @@
 class Enum {
   static fromArray(array) {
-    const e = {};
+    const raw = {};
+    const keys = [];
 
     array.forEach(([key, value], index) => {
-      if (typeof e[key] !== "undefined") {
+      if (typeof raw[key] !== "undefined") {
         throw new Error(`Duplicate key (key: "${key}")`);
       }
 
-      e[key] = index;
-      e[index] = value;
+      raw[key] = index;
+      raw[index] = value;
+
+      keys.push(key);
     });
 
-    return Object.seal(Object.assign(new Enum(), e));
+    return Object.seal(Object.assign(new Enum(keys), raw));
   }
 
   static fromObject(object) {
     return Enum.fromArray(Object.entries(object));
   }
 
-  // TODO this guarantees order but is ugly
+  constructor(keys) {
+    this._keys = keys || [];
+  }
+
   keys() {
-    return Object.keys(this)
-      .filter(key => {
-        const relativeInitialCharCode = key.charCodeAt(0) - 0x41;
-        return relativeInitialCharCode >= 0 && relativeInitialCharCode <= 25;
-      })
-      .map(key => [this[key], key])
-      .sort(([index_1, _], [index_2, __]) => index_1 - index_2)
-      .map(([_, key]) => key);
+    return [...this._keys];
   }
 
   entries() {
