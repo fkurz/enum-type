@@ -1,29 +1,30 @@
-# js-enums
+# enum-type
 
-Enums for JavaScript
+A TypeScript inspired Enum type for plain JavaScript.
 
-> ---
+## INSTALLATION
 
-**INDEX:**
+```
+npm i -S @fkurz/enum-type
+```
+## USAGE
 
-- [js-enums](#js-enums)
-    - [Summary](#summary)
-    - [Enumerated types](#enumerated-types)
-    - [Translation to JavaScript](#translation-to-javascript)
-        - [Properties of this implementation](#properties-of-this-implementation)
-        - [The `Enum` class](#the-enum-class)
-            - [Static methods](#static-methods)
-            - [Instance methods](#instance-methods)
+```javascript
+const Suit = Enum.fromObject({
+  CLUB: "club",
+  DIAMOND: "diamond",
+  HEART: "heart",
+  SPADE: "spade"
+]);
+```
 
-> ---
+See chapter _THE `Enum` CLASS_ below for more details.
 
-## Summary
+## SUMMARY
 
-This package provides the `Enum` class as common base for **enumerable types** in plain JavaScript.
+### ENUMERATED TYPES
 
-## Enumerated types
-
-The concept of an **enumerated type** (or, **enumeration**/ **enum**) has different interpretations in various languages. Most commonly, enums are thought of as sets of constants of a common type whose elements are bound to unique identifiers.
+**Enumerated types** (or, **enumeration**/ **enum**) are most commonly implemented as a set of constants of a common type whose elements are bound to unique identifiers.
 
 > ---
 
@@ -38,7 +39,7 @@ enum CardSuit {
 }
 ```
 
-This is getting compiled to instances `CLUB`, `DIAMOND`, `HEART` and `SPADE` available as public static properties of CardSuit. Therefore
+and is getting compiled to instances `CLUB`, `DIAMOND`, `HEART` and `SPADE` available as public static properties of CardSuit. Therefore
 
 ```java
 CardSuit.class == CardSuit.CLUB.getClass() // true
@@ -46,19 +47,17 @@ CardSuit.class == CardSuit.CLUB.getClass() // true
 
 > ---
 
-We lean towards a bit more flexible interpration of enums where an enumerable type is a specified as a
+This package provides a comparatively more flexible enum implementation for plain JavaScript which is inspired by [TypeScript enums][2]. 
 
-- finite collection of values $C$
+The underlying concept is that an enum type simply is a
+
+- finite collections of values $C$
 - which can be enumerated by the natural numbers
-- and whose indexes are associated with a set of names
+- and defines unique names/symbols for each value
 
-Implicitely $C$ is not necessarily a set and can contain values of arbitrary and not necessarily one and the same type. This is an intentionally weak approach in terms of type safety which might provide a wider range of use.
+### TRANSLATION TO JAVASCRIPT
 
-By requiring enumerability over the natural numbers—we can guarantee fixed iteration order and also gain ordering/comparability. Moreover—by associating the indexes of the values with names—we get hash map like value access and mnemonics for the values which may improve readability and self-documentation properties of our code.
-
-## Translation to JavaScript
-
-An enumerable type as specified above can be implemented in JavaScript as an `Object` with mixed `String` and `Number` keys where the string keys map to the index of their associated valuesimplement the numbering the values to their order number and the string keys map names to order numbers.
+An enumerable type as specified above can be implemented in JavaScript as an `Object` with mixed `String` and `Number` keys where the number keys enumerate arbitrary values and the string keys give names to the index numbers—and implicitely to the values—for better readability.
 
 > ---
 
@@ -81,21 +80,21 @@ const CardSuit = {
 
 > ---
 
-This is somewhat inspired by the way `enum` definitions are [transpiled in TypeScript][2]. We however discard the reverse mapping from indexes to keys in favor enumerating the values.
 
-### Properties of this implementation
+### PROPERTIES OF THIS IMPLEMENTATION
 
-An enum implementation like that has some convenient properties:
+This enum implementation has some convenient properties:
 
-- Implicit ordering :
+- Values may be of arbitrary and potentially heterogenous type
+- Implicit ordering/comparability: e.g.
   ```javascript
-  Suit.SPADE > Suit.CLUB; // true
+  CardSuit.SPADE > CardSuit.CLUB; // true
   ```
-- Value access by name (like an `Object`):
+- Value access by name (like an `Object`): e.g.
   ```javascript
   CardSuit[CardSuit.CLUB]; // 'club'
   ```
-- Fixed iteration order (like an `Array`):
+- Fixed iteration order (like an `Array`): e.g.
 
   ```javascript
   for (const suit of CardSuit) {
@@ -134,7 +133,7 @@ to obtain the value associated with the name `CLUB`.
 
 **NOTE:** The compatibility with the _for-of_ loop shown (third implementation property) is due to `Enum`'s implementation of the `Iterable` interface (otherwise properties bound to string keys would also be looped over).
 
-### The `Enum` class
+### THE `Enum` CLASS
 
 #### Static methods
 
@@ -186,11 +185,11 @@ const Suit = Enum.fromObject({
 
 <!-- prettier-ignore -->
 - `.keys(): string[]`
-- 
+
   Return the key set as an `Array`.
 - `.entries(): Array<string[]>`
   
-  Return the entry set as an `Array` of `Array`s. The inner `Array`s have fixed length two the key being at index zero and the value being at index one. 
+  Return the entry set as an `Array` of `Array`s. The inner `Array`s have fixed length two where the first element stores the index and the second element stores the value. 
 - `.values(): any[]`
 
   Return the value collection as an `Array`.

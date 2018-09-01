@@ -1,7 +1,7 @@
 {
-  "name": "js-enums",
+  "name": "@fkurz/enum-type",
   "version": "1.0.0",
-  "description": "Enums for JavaScript",
+  "description": "A TypeScript inspired Enum type for plain JavaScript",
   "main": "index.js",
   "dependencies": {},
   "devDependencies": {
@@ -20,7 +20,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/fkurz/js-enums.git"
+    "url": "git+https://github.com/fkurz/enum-type.git"
   },
   "keywords": [
     "JavaScript",
@@ -29,7 +29,7 @@
   "author": "Friedrich Kurz <friedrich.kurz@live.com> (https://github.com/fkurz/)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/fkurz/js-enums/issues"
+    "url": "https://github.com/fkurz/enum-type/issues"
   },
-  "homepage": "https://github.com/fkurz/js-enums#readme"
+  "homepage": "https://github.com/fkurz/enum-type#readme"
 }
