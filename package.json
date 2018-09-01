@@ -1,6 +1,6 @@
 {
   "name": "@fkurz/enum-type",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A TypeScript inspired Enum type for plain JavaScript",
   "main": "index.js",
   "dependencies": {},
