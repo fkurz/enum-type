@@ -17,7 +17,8 @@
   },
   "scripts": {
     "test": "jest",
-    "build": "babel src/index.js -o dist/index.js"
+    "build": "babel src --out-dir dist",
+    "prepublish": "npm run test && npm run build"
   },
   "repository": {
     "type": "git",
