@@ -109,7 +109,7 @@ This enum implementation has some convenient properties:
 
 - Readability/self-documentation:
   ```javascript
-  const colorOf(suit) {
+  const colorOf = (suit) => {
       switch(suit) {
           case CardSuit.CLUB:
           case CardSuit.SPADE: return 'black';
