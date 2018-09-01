@@ -96,15 +96,12 @@ describe("Enum methods", () => {
     });
 
     test("`Enum.prototype[Symbol.iterator]` iterates over whole enum`", () => {
-      const entries = countryCodeArray.reduce((result, [key, value]) => {
-        result[key] = value;
-        return result;
-      }, {});
-      const result = {};
-      for (const [key, value] of CountryCodes) {
-        result[key] = value;
+      const values = countryCodeArray.map(([_, value]) => value);
+      const result = [];
+      for (const value of CountryCodes) {
+        result.push(value);
       }
-      expect(result).toEqual(entries);
+      expect(result).toEqual(values);
     });
 
     test("`Enum` values can be used in `switch`", () => {
