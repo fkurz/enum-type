@@ -46,16 +46,16 @@ class Enum {
 
   [Symbol.iterator]() {
     return {
-      _elements: this.keys().map(key => [key, this[this[key]]]),
+      _values: this.values(),
       _index: 0,
       next() {
         let value = null;
         let done = false;
 
-        if (this._index === this._elements.length) {
+        if (this._index === this._values.length) {
           done = true;
         } else {
-          value = this._elements[this._index];
+          value = this._values[this._index];
           this._index = this._index + 1;
         }
 
